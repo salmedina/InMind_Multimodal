@@ -62,16 +62,27 @@ def get_channel_id(api_key, username):
 def get_playlist_id(api_key, channel_id, playlist_name):
     playlist_id = ''
     playlistUrl = 'https://www.googleapis.com/youtube/v3/playlists'
+
     params = {'key': api_key,
               'part': 'snippet', 'channelId': channel_id}
     url = '%s?%s' % (playlistUrl, urllib.urlencode(params))
     response = urllib.urlopen(url).read()
     data = json.loads(response)
 
-    for i in data['items']:
-        if i['snippet']['title'].lower() == playlist_name.lower():
-            playlist_id = i['id']
+    while len(data['items']) > 0 and playlist_id=='':
+        for i in data['items']:
+            print i['snippet']['title']
+            if i['snippet']['title'].lower() == playlist_name.lower():
+                playlist_id = i['id']
+                break
+        if 'nextPageToken' in data:
+            params['pageToken'] = data['nextPageToken']
+            url = '%s?%s' % (playlistUrl, urllib.urlencode(params))
+            response = urllib.urlopen(url).read()
+            data = json.loads(response)
+        else:
             break
+
 
     return playlist_id
 
@@ -80,15 +91,25 @@ def get_playlist_video_info(api_key, playlist_id):
     params = {'key': api_key, 'playlistId': playlist_id, 'part': 'snippet', 'maxResults': 50}
     url = '%s?%s' % (pItemsUrl, urllib.urlencode(params))
     response = urllib.urlopen(url).read()
+    data = json.loads(response)
 
     video_info = []
-    data = json.loads(response)
-    for i in data['items']:
-        tmp = {}
-        tmp['title'] = i['snippet']['title']
-        tmp['desc'] = i['snippet']['description']
-        tmp['id'] = i['snippet']['resourceId']['videoId']
-        video_info.append(tmp)
+
+    while len(data['items']) > 1:
+        for i in data['items']:
+            tmp = {}
+            tmp['title'] = i['snippet']['title']
+            tmp['desc'] = i['snippet']['description']
+            tmp['id'] = i['snippet']['resourceId']['videoId']
+            video_info.append(tmp)
+
+        if 'nextPageToken' in data:
+            params['pageToken'] = data['nextPageToken']
+            url = '%s?%s' % (pItemsUrl, urllib.urlencode(params))
+            response = urllib.urlopen(url).read()
+            data = json.loads(response)
+        else:
+            break
 
     return video_info
 
