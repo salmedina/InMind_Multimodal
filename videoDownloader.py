@@ -29,6 +29,12 @@ def get_parser():
   return parser
 
 def download_videos(input_filename, save_dir):
+    '''
+    Downloads the videos listed in input_filename and stores them in save_dir
+    :param input_filename: text file with a list of youtube watch urls
+    :param save_dir: path of the directory where the videos will be saved
+    :return: None
+    '''
     WATCH_URL = 'https://www.youtube.com/watch?v='
     input_file = open(input_filename, 'r')
     urls = input_file.readlines()
