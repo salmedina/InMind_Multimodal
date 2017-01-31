@@ -71,6 +71,7 @@ def get_playlist_id(api_key, channel_id, playlist_name):
     for i in data['items']:
         if i['snippet']['title'].lower() == playlist_name.lower():
             playlist_id = i['id']
+            break
 
     return playlist_id
 
@@ -108,7 +109,8 @@ def get_video_urls(api_key, username, playlist, output):
     video_urls = get_video_watch_links(api_key, video_info)
 
     out_file = open(output, 'w')
-    out_file.writelines(video_urls)
+    out_txt = '\n'.join(video_urls)
+    out_file.write(out_txt)
     out_file.close()
 
 if __name__ == "__main__":
