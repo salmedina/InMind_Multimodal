@@ -1,0 +1,31 @@
+# Entry scrape
+
+## Title
+'h1.entry-title span::text'
+
+# Entry
+'div.entry-content'
+
+## Images
+'div.wp-caption img::attr(src)'
+'div.wp-caption p::text'
+
+## Text
+
+
+## Video
+'iframe::attr(src)'
+need to replace 
+https://www.youtube.com/embed/
+https://www.youtube.com/watch?v=
+
+## Comments
+
+
+# Entry crawl
+
+## Entry Links
+response.css('h2.entry-title a::attr(href)').extract()
+
+## Follow links
+response.css('div.nav-previous a::attr(href)').extract()
