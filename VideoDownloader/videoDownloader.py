@@ -11,23 +11,6 @@ def is_valid_file(parser, arg):
   else:
     return arg
 
-def get_parser():
-  """Get parser object for this script"""
-  from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
-  parser = ArgumentParser(description=__doc__,
-                          formatter_class=ArgumentDefaultsHelpFormatter)
-  parser.add_argument("-i", "--input",
-                      dest="input_filename",
-                      type=lambda x: is_valid_file(parser, x),
-                      help="Text file with video urls list",
-                      metavar="FILE")
-  parser.add_argument("-s", "--savedir",
-                      dest="save_dir",
-                      type=str,
-                      help="Directory where the videos will be downloaded")
-
-  return parser
-
 def download_videos(input_filename, save_dir):
     '''
     Downloads the videos listed in input_filename and stores them in save_dir
@@ -48,6 +31,23 @@ def download_videos(input_filename, save_dir):
                 save_file_path = os.path.join(save_dir, save_filename)
                 stream.download(save_file_path)
                 break
+
+def get_parser():
+  """Get parser object for this script"""
+  from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+  parser = ArgumentParser(description=__doc__,
+                          formatter_class=ArgumentDefaultsHelpFormatter)
+  parser.add_argument("-i", "--input",
+                      dest="input_filename",
+                      type=lambda x: is_valid_file(parser, x),
+                      help="Text file with video urls list",
+                      metavar="FILE")
+  parser.add_argument("-s", "--savedir",
+                      dest="save_dir",
+                      type=str,
+                      help="Directory where the videos will be downloaded")
+
+  return parser
 
 if __name__ == "__main__":
     args = get_parser().parse_args()
