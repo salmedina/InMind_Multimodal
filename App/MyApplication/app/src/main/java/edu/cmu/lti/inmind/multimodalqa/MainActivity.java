@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         WebView webView = (WebView)findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
         //webView.loadUrl("http://holbox.lti.cs.cmu.edu:16000/index.html");
-        webView.loadUrl("http://192.168.1.45:5000");
+        webView.loadUrl("http://holbox.lti.cs.cmu.edu:5000");
         webView.setWebViewClient(new WebViewClient());
     }
 }
