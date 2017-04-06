@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask React Tutorial</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/JSXTransformer.js"></script>
+</head>
+<body>
+     <div id="mount-point"></div>
+</body>
+
+<script type="text/jsx">
+  /** @jsx React.DOM */
+
+  var ReactiveLabel = React.createClass({
+    render: function(){
+        return (
+          <div class="reactive-label">
+          <h2>{this.props.value}</h2>
+          </div>
+        )
+    }
+  });
+
+  var ReactiveImage = React.createClass({
+    render: function(){
+        return (
+          <div class="reactive-img">
+          <img src={this.props.src} alt={this.props.txt} height="200" width="250"></img>
+          </div>
+        )
+    }
+  });
+
+  var Input = React.createClass({
+      getInitialState: function(){
+          return {
+              inText: '',
+              value: '',
+              img_url: ''
+          }
+      },
+      componentWillMount: function(){
+          this.setState({value: this.state.value})
+      },
+      updateInputValue: function(event){
+          this.state.inText = event.target.value
+      },
+      updateAllControls: function(event){
+          this.setState({value: this.state.inText, 
+                        imgurl: 'https://static.pexels.com/photos/54632/cat-animal-eyes-grey-54632.jpeg'
+                      })
+      },
+      render: function(){
+          return (
+              <div className="update-label">
+                  <input type="text" placeholder="Enter text" onChange={this.updateInputValue}/>
+                  <button onClick={this.updateAllControls}>Ask</button>
+                  <ReactiveLabel value={this.state.value}/>
+                  <ReactiveImage txt={this.state.value} src={this.state.imgurl}/>
+              </div>
+          )
+      }
+  });
+
+  React.render(<Input/>, document.getElementById('mount-point'));
+</script>
+
+</html>
